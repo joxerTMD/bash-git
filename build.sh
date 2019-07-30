@@ -8,12 +8,9 @@
 set -e
 image="joxertmd/git-bash"
 
-tag=`git tag -l --points-at HEAD`
+docker build --no-cache -t ${image}:$TRAVIS_TAG .
+docker tag ${image}:$TRAVIS_TAG ${image}:latest
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+docker push ${image}:$TRAVIS_TAG
+docker push ${image}:latest
 
-if [[ "$TRAVIS_BRANCH" == "master" && "${tag}" =~ ^1.0 ]]; then
-  docker build --no-cache -t ${image}:${tag} .
-  docker tag ${image}:${tag} ${image}:latest
-  docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  docker push ${image}:${tag}
-  docker push ${image}:latest
-fi

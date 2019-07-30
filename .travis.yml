@@ -1,0 +1,8 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - bash ./build.sh
+    if: (tag =~ ^1.0.) AND (branch = master)
